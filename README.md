@@ -1,42 +1,130 @@
 
 # Rapport
 
-**Skriv din rapport här!**
+I MainActivity XML-koden har tre widget lagts till: TextView, EditText och Button. TextView visar en hälsningsfras "Välkommen",
+EditText låter användaren ange ett namn och knappen skickar data till en annan aktivitet, "ShowActivity".
 
-_Du kan ta bort all text som finns sedan tidigare_.
+I ShowActivity XML-koden har en widget, en TextView, lagts till för att visa data som tas emot från intent.
+Inten användes för att skicka data till andra aktiviteter, och Bundle användes för att skicka key-value, som "String".
+Nyckeln som skickades var "String" med en datatyp. Intent underlättar överföring av data mellan aktiviteter i applikationen.
 
-## Följande grundsyn gäller dugga-svar:
+Slutligen har en funktion som liknar en pil lagts till i ShowActivity för att göra det lättare att återgå till MainActivity.
 
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
 
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+## Koden
 
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+Main Activity Java
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button sendButton = findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+
+                EditText nameEdit = findViewById(R.id.editTextName);
+                String name = nameEdit.getText().toString();
+
+                intent.putExtra("name", name); // Optional
+                startActivity(intent);
+            }
+        });
     }
 }
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+```
+Activity main xml
 
-![](android.png)
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textViewName"/>
 
-Läs gärna:
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="232dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.571" />
+
+```
+
+```
+Nya Activity som jag döpte till Show Activity java
+
+public class ShowActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_show);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String name = extras.getString("name");
+
+            // Do something with the name and number
+
+
+            TextView nameView = findViewById(R.id.textViewNameShow);
+            nameView.setText(name);
+        }
+    }
+}
+```
+
+```
+Show Activity xml
+   <TextView
+        android:id="@+id/textViewNameShow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textViewNameShow"/>
+```
+
+Bilder 
+
+![](Screenshot_20230426_113158.png)
+![](Screenshot_20230426_113315.png)
+
+
+

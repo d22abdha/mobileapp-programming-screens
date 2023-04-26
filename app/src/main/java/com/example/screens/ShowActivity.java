@@ -21,8 +21,6 @@ public class ShowActivity extends AppCompatActivity {
 
             TextView nameView = findViewById(R.id.textViewNameShow);
             nameView.setText(name);
-
-
         }
     }
 }
